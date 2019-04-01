@@ -1,4 +1,6 @@
 package lab4;
+//TEAM 11-12
+//B.Azueta, A.Bortle, H.Bridge, K.Chan, C.Lemus
 
 public enum Direction {
 

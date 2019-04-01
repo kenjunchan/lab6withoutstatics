@@ -1,16 +1,20 @@
 package lab4;
-//Anna Bortle
+//TEAM 11-12
+//B.Azueta, A.Bortle, H.Bridge, K.Chan, C.Lemus
+
 public class Model {
 	
-	static int xloc = 0;
-	static int yloc = 0;
-	int xIncr = 8;
-	int yIncr = 2;
+	int xloc = 0;
+	int yloc = 0;
+	int xIncr = 4;
+	int yIncr = 1;
 	int frameWidth;
 	int frameHeight;
 	int imgWidth;
 	int imgHeight;
-	static Direction d;
+	public Direction d;
+	public boolean movementFlag; //moving = true, idle = false
+
 	
 	//constructor
 	public Model(int width, int height, int imageWidth, int imageHeight) {
@@ -19,11 +23,12 @@ public class Model {
 		imgWidth = imageWidth;
 		imgHeight = imageHeight;
 		d = Direction.SOUTHEAST;	//starting direction
+		movementFlag = true;
 	}
 
 	public void updateLocationAndDirection() {
 		
-		//test for collisions
+		//test for collisions, change direction if needed
 		if (xloc + imgWidth > frameWidth) { //hitting right boundary
 			xIncr = -xIncr;
 			switch (d){		
@@ -40,7 +45,6 @@ public class Model {
 				break;
 			}
 		}
-		
 		if (xloc < 0) {	//hitting left boundary
 			xIncr = -xIncr;
 			switch (d) {
@@ -57,7 +61,6 @@ public class Model {
 				break;
 			}
 		}
-		
 		if (yloc < 0 ) {	//hitting top boundary
 			yIncr = -yIncr;
 			switch (d) {
@@ -74,7 +77,6 @@ public class Model {
 				break;
 			}
 		}
-		
 		if (yloc + imgHeight > frameHeight) {		//hitting bottom boundary
 			yIncr = -yIncr;
 			switch (d) {
@@ -97,14 +99,32 @@ public class Model {
 		yloc = yloc + yIncr;
 	}
 
-	public static int getX() {
-		return xloc;
+	public int getX() {
+		if (this.movementFlag) {
+			//only update location/direction if orc is moving
+			updateLocationAndDirection(); 
+		}
+		return this.xloc;
 	}
-	public static int getY() {
-		return yloc;
+	public int getY() {
+		if (this.movementFlag) {
+			updateLocationAndDirection();
+		}
+		
+		return this.yloc;
+		
 	}
-
-	public static Direction getDirect() {
+	public Model getState() {
+		return this;
+	}
+	public Direction getDirect() {
 		return d;
+	}
+	public boolean getMovementFlag() {
+		return this.movementFlag;
+	}
+	public boolean switchMovementFlag() {
+		this.movementFlag = !this.movementFlag;
+		return this.movementFlag;
 	}
 }
